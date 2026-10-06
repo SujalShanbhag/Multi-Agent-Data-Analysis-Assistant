@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-Agent Data Analysis Assistant</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <!-- Chart.js for Interactive Data Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="bg-glow glow-a"></div>
+<div class="bg-glow glow-b"></div>
+
+<div class="app-container">
+  <!-- Left-Side Navigation Sidebar -->
+  <nav class="sidebar-nav">
+    <div class="sidebar-header">
+      <div class="eyebrow">ENTERPRISE PLATFORM</div>
+      <h2>Data Analysis Agent</h2>
+      <p>Multi-Agent AI & Analytics</p>
+    </div>
+
+    <div class="nav-links">
+      <button class="nav-item active" data-page="page-overview">
+        <span class="nav-icon">📁</span>
+        <span class="nav-label">Overview & Ingestion</span>
+      </button>
+
+      <button class="nav-item" data-page="page-visualizations">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Visual Analytics</span>
+      </button>
+
+      <button class="nav-item" data-page="page-ml">
+        <span class="nav-icon">🤖</span>
+        <span class="nav-label">Machine Learning (14)</span>
+      </button>
+
+      <button class="nav-item" data-page="page-conclusion">
+        <span class="nav-icon">✨</span>
+        <span class="nav-label">Gemini AI Conclusion</span>
+      </button>
+
+      <button class="nav-item" data-page="page-query">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">Ask Your Data (Q&A)</span>
+      </button>
+
+      <button class="nav-item" data-page="page-schema">
+        <span class="nav-icon">🗂️</span>
+        <span class="nav-label">Data Schema & Profile</span>
+      </button>
+
+      <button class="nav-item" data-page="page-report">
+        <span class="nav-icon">📄</span>
+        <span class="nav-label">Executive PDF Report</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-status">
+        <span class="dot"></span>
+        <span id="statusText">Checking backend...</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Right-Side Main Content Area -->
+  <div class="main-wrapper">
+    <!-- Top Bar Header -->
+    <header class="topbar">
+      <div class="header-left">
+        <h1 id="pageHeading">Overview & Ingestion</h1>
+        <p id="pageSubheading">Upload and profile datasets with automated multi-agent coordination.</p>
+      </div>
+      <div class="header-right">
+        <div id="activeDatasetBadge" class="dataset-badge">No dataset loaded</div>
+      </div>
+    </header>
+
+    <!-- Main Content Workspace with Multi-Page Views -->
+    <main class="content-workspace">
+
+      <!-- ========================================================
+           PAGE 1: OVERVIEW & DATASET INGESTION
+           ======================================================== -->
+      <section id="page-overview" class="view-page active">
+        <div class="hero-card card">
+          <div class="hero-content">
+            <span class="tag">MULTI-AGENT ANALYTICS & VISUALIZATION PIPELINE</span>
+            <h2>Automated End-to-End Dataset Understanding</h2>
+            <p>Upload any CSV or Excel file. Autonomous agents coordinate across data validation, preprocessing, distribution analysis, multi-model machine learning, and executive AI conclusions.</p>
+            <div class="hero-actions">
+              <label class="primary-btn"><input id="fileInput" type="file" accept=".csv,.xlsx,.xls">Upload Dataset</label>
+              <button id="analyzeBtn" class="primary-btn" disabled>Run Full Analysis</button>
+            </div>
+            <div id="fileName" class="file-name">No dataset loaded</div>
+          </div>
+        </div>
+
+        <!-- Metrics Summary Grid -->
+        <div class="metrics-grid">
+          <div class="metric card"><span>ROWS</span><strong id="rows">—</strong><small>Dataset records</small></div>
+          <div class="metric card"><span>COLUMNS</span><strong id="cols">—</strong><small>Detected fields</small></div>
+          <div class="metric card"><span>MISSING</span><strong id="missing">—</strong><small>Missing cells</small></div>
+          <div class="metric card"><span>DUPLICATES</span><strong id="duplicates">—</strong><small>Duplicate rows</small></div>
+        </div>
+
+        <!-- Agent Execution Pipeline Status Card -->
+        <div class="card panel">
+          <div class="section-title">
+            <div>
+              <span class="section-kicker">EXECUTION PIPELINE</span>
+              <h3>Autonomous Agent Orchestration</h3>
+            </div>
+            <span id="workflowState" class="mini-status">READY FOR DATASET</span>
+          </div>
+          <div id="agents" class="agent-list"></div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           PAGE 2: COMPREHENSIVE VISUAL ANALYTICS (ALL CHARTS)
+           ======================================================== -->
+      <section id="page-visualizations" class="view-page">
+        <div class="card panel">
+          <div class="section-title">
+            <div>
+              <span class="section-kicker">EXPLORATORY VISUALIZATIONS</span>
+              <h3>Simultaneous Multi-Dimensional Visual Analytics</h3>
+            </div>
+            <span class="mini-status">Chart.js Live Engine</span>
+          </div>
+
+          <div class="visualizations-grid">
+            <!-- Chart 1: Feature Distribution -->
+            <div class="viz-card">
+              <div class="viz-card-header">
+                <h4>📊 Feature Distribution (Histogram)</h4>
+                <select id="distColSelect" class="viz-select"></select>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="distCanvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 2: Categorical Breakdown -->
+            <div class="viz-card">
+              <div class="viz-card-header">
+                <h4>🏷️ Categorical Breakdown & Value Distribution</h4>
+                <select id="catColSelect" class="viz-select"></select>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="catCanvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 3: Correlation Matrix Heatmap -->
+            <div class="viz-card">
+              <div class="viz-card-header">
+                <h4>🔗 Statistical Correlations (Pearson r Pairs)</h4>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="corrCanvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 4: ML Model Performance Leaderboard Chart -->
+            <div class="viz-card">
+              <div class="viz-card-header">
+                <h4>🏆 Machine Learning Leaderboard (All Evaluated Models)</h4>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="mlCanvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 5: Box Plot / Quartile Distribution -->
+            <div class="viz-card">
+              <div class="viz-card-header">
+                <h4>📦 Box Plot & Quartile Spread (IQR Analysis)</h4>
+                <select id="boxColSelect" class="viz-select"></select>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="boxCanvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 6: 2D Bivariate Scatter Correlation Plot -->
+            <div class="viz-card">
+              <div class="viz-card-header">
+                <h4>🎯 2D Bivariate Scatter Plot (Feature Interaction)</h4>
+                <select id="scatterPairSelect" class="viz-select"></select>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="scatterCanvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 7: Time-Series / Sequential Trend Line Chart -->
+            <div class="viz-card" style="grid-column: 1 / -1;">
+              <div class="viz-card-header">
+                <h4>📈 Chronological / Sequential Trend Line (Temporal Trajectory)</h4>
+                <span id="trendInfoBadge" class="mini-status">Continuous Stream</span>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="trendCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           PAGE 3: MACHINE LEARNING SUITE (ALL 14+ MODELS)
+           ======================================================== -->
+      <section id="page-ml" class="view-page">
+        <div class="card panel">
+          <div class="section-title">
+            <div>
+              <span class="section-kicker">PREDICTIVE MODELING</span>
+              <h3 id="mlTitle">Machine Learning Leaderboard (All 14+ Models Evaluated)</h3>
+            </div>
+            <span id="bestModelBadge" class="mini-status highlight">Awaiting Analysis</span>
+          </div>
+          <div id="mlOutput" class="ml-output">
+            Run Full Analysis to evaluate Linear Regression, Ridge (α=0.1, 1.0, 10.0), Lasso (α=0.01, 0.1), ElasticNet, Polynomial Ridge, Huber Robust Regression, K-Nearest Neighbors, Distance-Weighted KNN, Decision Trees, Random Forests, and Gradient Boosting.
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           PAGE 4: GEMINI AI ANALYSED CONCLUSION
+           ======================================================== -->
+      <section id="page-conclusion" class="view-page">
+        <div class="card panel highlight-panel">
+          <div class="section-title">
+            <div>
+              <span class="section-kicker">SYNTHESIS & STRATEGIC RECOMMENDATIONS</span>
+              <h3>Gemini AI Analysed Conclusion</h3>
+            </div>
+            <span id="conclusionEngineBadge" class="mini-status">Google Gemini AI</span>
+          </div>
+          <div id="conclusionContent" class="conclusion-box">
+            Upload a dataset and click "Run Full Analysis" to generate an executive-level analytical conclusion synthesizing statistical drivers, machine learning performance, data risks, and strategic recommendations.
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           PAGE 5: NATURAL LANGUAGE QUERY ASSISTANT (ASK YOUR DATA)
+           ======================================================== -->
+      <section id="page-query" class="view-page">
+        <div class="card panel">
+          <div class="section-title">
+            <div>
+              <span class="section-kicker">NATURAL LANGUAGE QUERY</span>
+              <h3>Ask Your Data</h3>
+            </div>
+          </div>
+          <div class="query-box">
+            <textarea id="question" placeholder="e.g. Which product generated the highest revenue? Or: What is the correlation between marketing spend and sales?"></textarea>
+            <button id="askBtn" class="primary-btn">Ask Question</button>
+          </div>
+          <div id="answer" class="answer-box">Ask any question in natural language. Powered by Gemini dynamic discovery or local analytics engine.</div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           PAGE 6: DATASET SCHEMA & PROFILE
+           ======================================================== -->
+      <section id="page-schema" class="view-page">
+        <div class="card panel">
+          <div class="section-title">
+            <div>
+              <span class="section-kicker">DATA SCHEMA</span>
+              <h3>Dataset Profile & Field Types</h3>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Column</th><th>Type</th><th>Missing</th><th>Unique</th></tr>
+              </thead>
+              <tbody id="profileTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           PAGE 7: EXECUTIVE PDF REPORT EXPORT & KEY FINDINGS
+           ======================================================== -->
+      <section id="page-report" class="view-page">
+        <div class="content-grid">
+          <div class="card panel">
+            <div class="section-title">
+              <div><span class="section-kicker">KEY FINDINGS</span><h3>Agent Observations</h3></div>
+            </div>
+            <ul id="insights" class="insight-list"><li>Run an analysis to generate findings.</li></ul>
+          </div>
+
+          <div class="card panel">
+            <div class="section-title">
+              <div><span class="section-kicker">EXECUTIVE REPORT</span><h3>Export PDF Analysis Report</h3></div>
+            </div>
+            <div class="report-box">
+              <p>Generate and download a formal, publication-grade <b>PDF report</b> containing complete profiling, cleaning actions, statistical correlations, full 14+ ML leaderboard, and the <b>Gemini AI Analysed Conclusion</b> at the end.</p>
+              <a id="reportLink" class="primary-btn disabled" href="/api/report" download="data_analysis_report.pdf">📥 Download PDF Report</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      Multi-Agent Data Analysis Assistant • Publication-Grade PDF Reporting.
+    </footer>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
